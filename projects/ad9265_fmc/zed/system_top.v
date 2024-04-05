@@ -70,16 +70,8 @@ module system_top (
 
   output          spdif,
 
-  output          i2s_mclk,
-  output          i2s_bclk,
-  output          i2s_lrclk,
-  output          i2s_sdata_out,
-  input           i2s_sdata_in,
-
   inout           iic_scl,
   inout           iic_sda,
-  inout   [ 1:0]  iic_mux_scl,
-  inout   [ 1:0]  iic_mux_sda,
 
   input           otg_vbusoc,
 
@@ -104,12 +96,6 @@ module system_top (
   wire    [63:0]  gpio_i;
   wire    [63:0]  gpio_o;
   wire    [63:0]  gpio_t;
-  wire    [ 1:0]  iic_mux_scl_i_s;
-  wire    [ 1:0]  iic_mux_scl_o_s;
-  wire            iic_mux_scl_t_s;
-  wire    [ 1:0]  iic_mux_sda_i_s;
-  wire    [ 1:0]  iic_mux_sda_o_s;
-  wire            iic_mux_sda_t_s;
 
   wire    [ 2:0]  spi0_csn;
   wire            spi0_clk;
@@ -137,22 +123,6 @@ module system_top (
     .dio_i (gpio_o[31:0]),
     .dio_o (gpio_i[31:0]),
     .dio_p (gpio_bd));
-
-  ad_iobuf #(
-    .DATA_WIDTH (2)
-  ) i_iic_mux_scl (
-    .dio_t ({iic_mux_scl_t_s, iic_mux_scl_t_s}),
-    .dio_i (iic_mux_scl_o_s),
-    .dio_o (iic_mux_scl_i_s),
-    .dio_p (iic_mux_scl));
-
-  ad_iobuf #(
-    .DATA_WIDTH (2)
-  ) i_iic_mux_sda (
-    .dio_t ({iic_mux_sda_t_s, iic_mux_sda_t_s}),
-    .dio_i (iic_mux_sda_o_s),
-    .dio_o (iic_mux_sda_i_s),
-    .dio_p (iic_mux_sda));
 
   ad9265_spi i_spi (
     .spi_csn(spi0_csn[1:0]),
@@ -197,19 +167,8 @@ module system_top (
 
     .spdif (spdif),
 
-    .i2s_bclk (i2s_bclk),
-    .i2s_lrclk (i2s_lrclk),
-    .i2s_mclk (i2s_mclk),
-    .i2s_sdata_in (i2s_sdata_in),
-    .i2s_sdata_out (i2s_sdata_out),
     .iic_fmc_scl_io (iic_scl),
     .iic_fmc_sda_io (iic_sda),
-    .iic_mux_scl_i (iic_mux_scl_i_s),
-    .iic_mux_scl_o (iic_mux_scl_o_s),
-    .iic_mux_scl_t (iic_mux_scl_t_s),
-    .iic_mux_sda_i (iic_mux_sda_i_s),
-    .iic_mux_sda_o (iic_mux_sda_o_s),
-    .iic_mux_sda_t (iic_mux_sda_t_s),
 
     .otg_vbusoc (otg_vbusoc),
 
