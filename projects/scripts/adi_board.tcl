@@ -9,6 +9,7 @@ package require math
 #
 set sys_cpu_interconnect_index 0
 set sys_cpu_interconnect_instance 0
+set sys_cpu_interconnect_cascade 0
 set sys_hpc0_interconnect_index -1
 set sys_hpc1_interconnect_index -1
 set sys_hp0_interconnect_index -1
@@ -964,11 +965,11 @@ proc ad_cpu_interconnect {p_address p_name {p_intf_name {}}} {
   global sys_zynq
   global sys_cpu_interconnect_index
   global sys_cpu_interconnect_instance
+  global sys_cpu_interconnect_cascade
   global use_smartconnect
-
   
 
-  if {$sys_zynq == -1} {
+  if {$sys_cpu_interconnect_cascade == 1} {
     set axi_cpu_interconnect axi_cpu_interconnect_${sys_cpu_interconnect_instance}
 
     if {$sys_cpu_interconnect_index == 15} {
@@ -1004,29 +1005,29 @@ proc ad_cpu_interconnect {p_address p_name {p_intf_name {}}} {
       ad_connect sys_cpu_resetn $axi_cpu_interconnect/S00_ARESETN
     }
 
-    if {$sys_zynq == 3} {
-      ad_connect sys_cpu_clk sys_cips/m_axi_fpd_aclk
-      ad_connect $axi_cpu_interconnect/S00_AXI sys_cips/M_AXI_FPD
-    }
-    if {$sys_zynq == 2} {
-      ad_connect sys_cpu_clk sys_ps8/maxihpm0_lpd_aclk
-      ad_connect $axi_cpu_interconnect/S00_AXI sys_ps8/M_AXI_HPM0_LPD
-    }
-    if {$sys_zynq == 1} {
-      ad_connect sys_cpu_clk sys_ps7/M_AXI_GP0_ACLK
-      ad_connect $axi_cpu_interconnect/S00_AXI sys_ps7/M_AXI_GP0
-    }
-    if {$sys_zynq == 0} {
-      ad_connect $axi_cpu_interconnect/S00_AXI sys_mb/M_AXI_DP
-    }
-    if {$sys_zynq == -1} {
-      if {$sys_cpu_interconnect_instance == 0} {
-        ad_connect $axi_cpu_interconnect/S00_AXI mng_axi_vip/M_AXI
-      } else {
-        set temp_sys_cpu_interconnect_instance [expr $sys_cpu_interconnect_instance - 1]
-        set temp_name axi_cpu_interconnect_${temp_sys_cpu_interconnect_instance}
-        ad_connect $axi_cpu_interconnect/S00_AXI $temp_name/M15_AXI
+    if {$sys_cpu_interconnect_instance == 0} {
+      if {$sys_zynq == 3} {
+        ad_connect sys_cpu_clk sys_cips/m_axi_fpd_aclk
+        ad_connect $axi_cpu_interconnect/S00_AXI sys_cips/M_AXI_FPD
       }
+      if {$sys_zynq == 2} {
+        ad_connect sys_cpu_clk sys_ps8/maxihpm0_lpd_aclk
+        ad_connect $axi_cpu_interconnect/S00_AXI sys_ps8/M_AXI_HPM0_LPD
+      }
+      if {$sys_zynq == 1} {
+        ad_connect sys_cpu_clk sys_ps7/M_AXI_GP0_ACLK
+        ad_connect $axi_cpu_interconnect/S00_AXI sys_ps7/M_AXI_GP0
+      }
+      if {$sys_zynq == 0} {
+        ad_connect $axi_cpu_interconnect/S00_AXI sys_mb/M_AXI_DP
+      }
+      if {$sys_zynq == -1} {
+        ad_connect $axi_cpu_interconnect/S00_AXI mng_axi_vip/M_AXI
+      }
+    } else {
+      set temp_sys_cpu_interconnect_instance [expr $sys_cpu_interconnect_instance - 1]
+      set temp_name axi_cpu_interconnect_${temp_sys_cpu_interconnect_instance}
+      ad_connect $axi_cpu_interconnect/S00_AXI $temp_name/M15_AXI
     }
   }
 
