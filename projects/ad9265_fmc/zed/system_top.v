@@ -1,6 +1,6 @@
 // ***************************************************************************
 // ***************************************************************************
-// Copyright (C) 2023-2024 Analog Devices, Inc. All rights reserved.
+// Copyright (C) 2024 Analog Devices, Inc. All rights reserved.
 //
 // In this HDL repository, there are many different and unique modules, consisting
 // of various HDL (Verilog or VHDL) components. The individual modules are
@@ -125,11 +125,11 @@ module system_top (
     .dio_p (gpio_bd));
 
   ad9265_spi i_spi (
-    .spi_csn(spi0_csn[1:0]),
-    .spi_clk(spi_clk),
-    .spi_mosi(spi_mosi),
-    .spi_miso(spi_miso),
-    .spi_sdio(spi_sdio));
+    .spi_csn (spi0_csn[1:0]),
+    .spi_clk (spi_clk),
+    .spi_mosi (spi_mosi),
+    .spi_miso (spi_miso),
+    .spi_sdio (spi_sdio));
 
   system_wrapper i_system_wrapper (
     .ddr_addr (ddr_addr),

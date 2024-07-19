@@ -1,5 +1,5 @@
 ###############################################################################
-## Copyright (C) 2023-2024 Analog Devices, Inc. All rights reserved.
+## Copyright (C) 2024 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
 
@@ -9,7 +9,7 @@ source $ad_hdl_dir/projects/scripts/adi_pd.tcl
 
 set mem_init_sys_path [get_env_param ADI_PROJECT_DIR ""]mem_init_sys.txt;
 
-#system ID
+# system ID
 ad_ip_parameter axi_sysid_0 CONFIG.ROM_ADDR_BITS 9
 ad_ip_parameter rom_sys_0 CONFIG.PATH_TO_FILE "[pwd]/$mem_init_sys_path"
 ad_ip_parameter rom_sys_0 CONFIG.ROM_ADDR_BITS 9

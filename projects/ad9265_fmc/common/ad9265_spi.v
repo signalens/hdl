@@ -1,6 +1,6 @@
 // ***************************************************************************
 // ***************************************************************************
-// Copyright (C) 2014-2023 Analog Devices, Inc. All rights reserved.
+// Copyright (C) 2014-2024 Analog Devices, Inc. All rights reserved.
 //
 // In this HDL repository, there are many different and unique modules, consisting
 // of various HDL (Verilog or VHDL) components. The individual modules are
@@ -83,7 +83,7 @@ module ad9265_spi (
     end
   end
 
-  // io butter
+  // I/O buffer
 
   assign spi_sdio = (spi_enable_s == 1'b1) ? 1'bz: spi_mosi;
   assign spi_miso = spi_sdio;
