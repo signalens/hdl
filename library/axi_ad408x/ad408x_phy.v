@@ -56,11 +56,11 @@ module ad408x_phy #(
   input                             cnv_in_p,
   input                             cnv_in_n,
 
-   input        [4:0]                num_lanes,
-      input                             self_sync,
-      input                             bitslip_enable,
-      input                             filter_enable,
-      input                             filter_rdy_n,
+  input        [4:0]                num_lanes,
+  input                             self_sync,
+  input                             bitslip_enable,
+  input                             filter_enable,
+  input                             filter_rdy_n,
 
   // delay interface(for IDELAY macros)
 
@@ -99,17 +99,15 @@ module ad408x_phy #(
                       POST_SYNC    = 3'h5;
 
   wire           slip;
-
   wire           dclk_s;
-
   wire           rise_cnv;
   wire           rise_slip;
   wire           cnv_in_io;
   wire   [19:0]  adc_data_s;
   wire           adc_valid_s;
   wire           single_lane;
-
   wire           cnv_in_io_s;
+
   wire           rx_data_b_p;
   wire           rx_data_b_n;
   wire           rx_data_a_p;
@@ -121,7 +119,6 @@ module ad408x_phy #(
   wire   [19:0]  pattern_value;
   wire   [ 3:0]  adc_cnt_value;
   wire   [19:0]  adc_data_p_d;
-  wire   [ 1:0]  delay_locked_s;
   wire           filter_rdy_n_s;
   wire   [ 4:0]  shift_cnt_value;
   wire           adc_cnt_enable_s;
@@ -136,7 +133,7 @@ module ad408x_phy #(
   reg    [ 4:0]  shift_cnt           = 'd0;
   reg            adc_valid_d         = 'b0;
   reg    [ 1:0]  cnv_in_io_d         = 'b0;
-  reg            filter_cycle        = 'b1;
+  reg            filter_cycle        = 'b0;
   reg    [ 2:0]  transfer_state      = 'b0;
   reg            filter_rdy_n_d      = 'b0;
   reg            sync_status_int     = 'b0;
@@ -150,7 +147,6 @@ module ad408x_phy #(
   assign pattern_value       = 'hac5d6;
   assign single_lane         =  num_lanes[0];
   assign adc_clk             =  adc_clk_data;
-  assign delay_locked        = &delay_locked_s;
   assign sync_status         =  sync_status_int_d;
   assign fall_filter_ready   =  fall_filter_ready_d[1];
   assign rise_slip           = ~slip_d[1]      & slip_d[0];
@@ -228,14 +224,14 @@ module ad408x_phy #(
   always @(*) begin
     case (transfer_state)
       IDLE : begin : idle_state
-        transfer_state_next = (rise_slip) ? PRE_SYNC :((filter_rdy_n_s & filter_cycle)
+        transfer_state_next = (rise_slip) ? PRE_SYNC :((filter_cycle)
                                           ? FILTER_COUNT :((!filter_enable && (rise_cnv || self_sync ))
                                           ? COUNT : IDLE ));
         filter_cycle        = (fall_filter_ready)  ? 1'b1 : filter_cycle;
         cycle_done = 0;
       end
       COUNT : begin : count_state
-        transfer_state_next = (rise_slip)   ? PRE_SYNC :((cycle_done)  ? ((filter_rdy_n_s & filter_cycle)
+        transfer_state_next = (rise_slip)   ? PRE_SYNC :((cycle_done)  ? ((filter_cycle)
                                             ? FILTER_COUNT : COUNT ) : COUNT );
         filter_cycle        = (fall_filter_ready)  ? 1'b1 : filter_cycle;
         cycle_done          = (adc_cnt_p == 4'h4);
@@ -262,6 +258,7 @@ module ad408x_phy #(
       default : begin : default_state
         transfer_state_next = IDLE;
         cycle_done = 0;
+        filter_cycle = 0;
       end
     endcase
   end
@@ -280,32 +277,6 @@ module ad408x_phy #(
     adc_data_d[2] <= adc_data_d[1];
   end
 
-  // util_axis_fifo # (
-    // .DATA_WIDTH(20),
-    // .ADDRESS_WIDTH(4)
-  // ) util_axis_fifo_inst (
-    // .m_axis_aclk(adc_clk_data),
-    // .m_axis_aresetn(~adc_rst),
-    // .m_axis_ready(1'b1),
-    // .m_axis_valid(),
-    // .m_axis_data(adc_data_p_d),
-    // .m_axis_tkeep(),
-    // .m_axis_tlast(),
-    // .m_axis_level(),
-    // .m_axis_empty(),
-    // .m_axis_almost_empty(),
-
-    // .s_axis_aclk(adc_clk_phy),
-    // .s_axis_aresetn(~adc_rst),
-    // .s_axis_ready(),
-    // .s_axis_valid(1'b1),
-    // .s_axis_data(adc_data_p),
-    // .s_axis_tkeep(),
-    // .s_axis_tlast(),
-    // .s_axis_room(),
-    // .s_axis_full(),
-    // .s_axis_almost_full());
-
   xpm_cdc_gray #(
     .DEST_SYNC_FF(10), // DECIMAL; range: 2-10
     .INIT_SYNC_FF(0),  // DECIMAL; 0=disable simulation init values, 1=enable simulation init values
@@ -316,8 +287,6 @@ module ad408x_phy #(
     .dest_out_bin(adc_data_p_d),
     .src_clk(adc_clk_phy),
     .src_in_bin(adc_data_p));
-
-
 
   always @(posedge adc_clk_phy) begin
     adc_data_p <= {adc_data_p[17:0], rx_data_a_p, rx_data_a_n};
@@ -343,6 +312,6 @@ module ad408x_phy #(
     .up_drdata(up_adc_drdata[4:0]),
     .delay_clk(delay_clk),
     .delay_rst(delay_rst),
-    .delay_locked(delay_locked_s[1]));
+    .delay_locked(delay_locked));
 
 endmodule

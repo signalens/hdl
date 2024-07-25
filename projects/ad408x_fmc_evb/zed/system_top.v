@@ -106,7 +106,7 @@ module system_top (
   output          gp1_dir,
   output          gp2_dir,
   output          gp3_dir,
-  inout           gpio1_fmc,
+  input           gpio1_fmc,
   inout           gpio2_fmc,
   inout           gpio3_fmc,
 
@@ -157,36 +157,18 @@ module system_top (
   reg     [26:0]  dbg_cnt_f     =  'b0;
   reg     [26:0]  dbg_cnt_100_f =  'b0;
 
-  assign ad9508_sync   = ad9508_sync_s;
-  assign gpio_i[35]    = adf435x_lock;
-  assign gpio_i[36]    = pwrgd;
-  assign gpio_i[63:37] = gpio_o[63:37];
-
-  assign gp0_dir  = 1'b0;
-  assign gp1_dir  = 1'b0;
-  assign gp2_dir  = 1'b0;
-  assign gp3_dir  = 1'b0;
-  assign en_psu   = 1'b1;
-  assign osc_en   = pwrgd;
-  assign sync_req = gpio_o[42];
-  assign pd_v33b  = 1'b1;
-
-  // always @(posedge sys_cpu_out_clk) begin
-    // sync_req_d <= {sync_req_d[2:0],sync_req};
-    // if (sync_req_d[2] & ~sync_req_d[3]) begin
-      // ad9508_sync_s <= 1'b0;
-    // end else if (~sync_req_d[2] & sync_req_d[3]) begin
-      // ad9508_sync_s <= 1'b1;
-    // end
-  // end
-
-  // Dummy function to prevent sys_cpu_out_clk optimization
-  // Even if the clock is not used the diff termination should help signal
-  // integrity
-
-  always @(posedge sys_cpu_out_clk) begin
-    dbg_cnt <= dbg_cnt + 1;
-  end
+  assign gp0_dir             = 1'b0;
+  assign gp1_dir             = 1'b0;
+  assign gp2_dir             = 1'b1;
+  assign gp3_dir             = 1'b0;
+  assign en_psu              = 1'b1;
+  assign osc_en              = pwrgd;
+  assign pd_v33b             = 1'b1;
+  assign sync_req            = gpio_o[42];
+  assign gpio_i[35]          = adf435x_lock;
+  assign gpio_i[36]          = pwrgd;
+  assign ad9508_sync         = 1'b1;
+  assign gpio_i[63:37]       = gpio_o[63:37];
 
   ad_iobuf #(
     .DATA_WIDTH(2)

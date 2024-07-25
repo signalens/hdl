@@ -63,4 +63,3 @@ set_property IDELAY_VALUE 11 [get_cells -hier -filter {name =~ *da_iddr/i_rx_dat
 # clocks
 
 create_clock -period 2.500 -name dco_clk [get_ports dco_p]
-
