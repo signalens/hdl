@@ -301,7 +301,7 @@ module ad408x_phy #(
     .IODELAY_GROUP(IO_DELAY_GROUP),
     .REFCLK_FREQUENCY(DELAY_REFCLK_FREQUENCY)
   ) da_iddr (
-    .rx_clk(~adc_clk_phy),
+    .rx_clk(adc_clk_phy),
     .rx_data_in_p(data_a_in_p),
     .rx_data_in_n(data_a_in_n),
     .rx_data_p(rx_data_a_p),
