@@ -7,6 +7,7 @@
 PROJECT_NAME := ad57xx_ardz_de10nano
 
 M_DEPS += ../../scripts/adi_pd.tcl
+M_DEPS += ../common/ad57xx_ardz_qsys.tcl
 M_DEPS += ../../common/de10nano/de10nano_system_qsys.tcl
 M_DEPS += ../../common/de10nano/de10nano_system_assign.tcl
 

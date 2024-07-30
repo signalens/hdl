@@ -56,9 +56,9 @@ set_instance_parameter_value spi_engine_offload_0 {SDO_STREAMING} {1}
 
 add_instance trig_gen axi_pwm_gen
 set_instance_parameter_value trig_gen {N_PWMS} {2}
-set_instance_parameter_value trig_gen {PULSE_0_PERIOD} {85} ; # FIXME
-set_instance_parameter_value trig_gen {PULSE_0_WIDTH} {1} ; # FIXME
-set_instance_parameter_value trig_gen {PULSE_1_PERIOD} {85} ; # FIXME
+set_instance_parameter_value trig_gen {PULSE_0_PERIOD} {98}
+set_instance_parameter_value trig_gen {PULSE_0_WIDTH} {1}
+set_instance_parameter_value trig_gen {PULSE_1_PERIOD} {98}
 set_instance_parameter_value trig_gen {PULSE_1_WIDTH} {13} ; # FIXME
 set_instance_parameter_value trig_gen {PULSE_1_OFFSET} {3} ; # FIXME
 
@@ -68,7 +68,7 @@ add_instance spi_clk_pll altera_pll
 set_instance_parameter_value spi_clk_pll {gui_feedback_clock} {Global Clock}
 set_instance_parameter_value spi_clk_pll {gui_operation_mode} {direct}
 set_instance_parameter_value spi_clk_pll {gui_number_of_clocks} {1}
-set_instance_parameter_value spi_clk_pll {gui_output_clock_frequency0} {160}; # FIXME
+set_instance_parameter_value spi_clk_pll {gui_output_clock_frequency0} {140};
 set_instance_parameter_value spi_clk_pll {gui_phase_shift0} {0}
 set_instance_parameter_value spi_clk_pll {gui_phase_shift1} {0}
 set_instance_parameter_value spi_clk_pll {gui_phase_shift_deg0} {0.0}

@@ -12,7 +12,7 @@ adi_project ad57xx_ardz_de10nano
 
 source $ad_hdl_dir/projects/common/de10nano/de10nano_system_assign.tcl
 
-# ad57xx interface FIXME
+# ad57xx interface
 
 set_location_assignment PIN_AG11 -to ad57xx_ardz_scl      ; # Arduino_IO15
 set_location_assignment PIN_AH9  -to ad57xx_ardz_sda      ; # Arduino_IO14
