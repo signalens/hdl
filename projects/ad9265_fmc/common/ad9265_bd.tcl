@@ -26,6 +26,7 @@ ad_ip_parameter axi_ad9265_dma CONFIG.AXI_SLICE_DEST 0
 ad_ip_parameter axi_ad9265_dma CONFIG.DMA_2D_TRANSFER 0
 ad_ip_parameter axi_ad9265_dma CONFIG.DMA_DATA_WIDTH_SRC 16
 ad_ip_parameter axi_ad9265_dma CONFIG.DMA_DATA_WIDTH_DEST 64
+ad_ip_parameter axi_ad9265_dma CONFIG.AXI_SLICE_SRC 1
 
 # connections (ad9265)
 
