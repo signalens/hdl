@@ -71,7 +71,7 @@ module system_top (
   output        ad4170_spi_mosi,
   output        ad4170_spi_sclk,
   output        ad4170_spi_csn,
-  inout  [1:0]  ad4170_dig_aux
+  input  [1:0]  ad4170_dig_aux
 );
 
   // internal signals
@@ -99,15 +99,7 @@ module system_top (
     .dio_p(led));
 
   assign gpio_i[31:8] = gpio_o[31:8];
-
-  ad_iobuf #(
-    .DATA_WIDTH(2)
-  ) i_iobuf_ad4170_gpio (
-    .dio_t(gpio_t[33:32]),
-    .dio_i(gpio_o[33:32]),
-    .dio_o(gpio_i[33:32]),
-    .dio_p({ad4170_dig_aux})); // 33:32
-
+  assign gpio_i[33:32] = ad4170_dig_aux[1:0];
   assign gpio_i[63:34] = gpio_o[63:34];
 
   system_wrapper i_system_wrapper (
