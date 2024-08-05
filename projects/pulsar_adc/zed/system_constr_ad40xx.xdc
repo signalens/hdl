@@ -11,6 +11,7 @@ set_property -dict {PACKAGE_PIN M19 IOSTANDARD LVCMOS25 IOB TRUE} [get_ports ad4
 set_property -dict {PACKAGE_PIN M20 IOSTANDARD LVCMOS25 IOB TRUE} [get_ports ad40xx_spi_cs]        ; ## G7   FMC_LA00_CC_N  IO_L13N_T2_MRCC_34
 
 set_property -dict {PACKAGE_PIN P22 IOSTANDARD LVCMOS25} [get_ports ad40xx_amp_pd]                 ; ## G10  FMC_LA03_N     IO_L16N_T2_34
+set_property -dict {PACKAGE_PIN N20 IOSTANDARD LVCMOS25} [get_ports ad7944_turbo]                  ; ## D09  FMC_LA01_CC_N
 
 # NOTE: clk_fpga_0 is the first PL fabric clock, also called $sys_cpu_clk
 
