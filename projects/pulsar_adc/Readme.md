@@ -66,3 +66,8 @@ Here are some pointers to help you:
   * AD4011
   * ADAQ4003
   * AD4020
+
+build example:
+make
+make AD40XX_ADAQ400X_N=1 FOUR_WIRE_MODE=0
+make AD40XX_ADAQ400X_N=1 FOUR_WIRE_MODE=1

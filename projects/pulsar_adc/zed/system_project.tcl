@@ -16,7 +16,7 @@ source $ad_hdl_dir/projects/scripts/adi_board.tcl
 ##  ADAQ4003
 ##
 ## NOTE: Make sure that you set up your required ADC resolution in pulsar_adc_bd.tcl
-##  
+##
 
 ## Please select which eval board do you want to use
 ##
@@ -24,21 +24,38 @@ source $ad_hdl_dir/projects/scripts/adi_board.tcl
 ##    0 - EVAL-ADAQ400x
 ##
 set AD40XX_ADAQ400X_N [get_env_param AD40XX_ADAQ400X_N 1]
+set FOUR_WIRE_MODE [get_env_param FOUR_WIRE_MODE 0]
 
-adi_project pulsar_adc_pmdz_zed
+adi_project pulsar_adc_pmdz_zed 0 [list \
+  FOUR_WIRE_MODE   [get_env_param FOUR_WIRE_MODE      0]]
+
+adi_project_files pulsar_adc_pmdz_zed [list \
+  "$ad_hdl_dir/library/common/ad_iobuf.v" \
+  "$ad_hdl_dir/projects/common/zed/zed_system_constr.xdc"]
 
 if {$AD40XX_ADAQ400X_N == 0} {
   adi_project_files pulsar_adc_pmdz_zed [list \
-      "$ad_hdl_dir/library/common/ad_iobuf.v" \
-      "system_top_adaq400x.v" \
-      "system_constr_adaq400x.xdc" \
-      "$ad_hdl_dir/projects/common/zed/zed_system_constr.xdc"]
+    "system_top_adaq400x.v" \
+    "system_constr_adaq400x.xdc" ]
+
 } elseif {$AD40XX_ADAQ400X_N == 1} {
-   adi_project_files pulsar_adc_pmdz_zed [list \
-      "$ad_hdl_dir/library/common/ad_iobuf.v" \
+
+    adi_project_files pulsar_adc_pmdz_zed [list \
       "system_top_ad40xx.v" \
-      "system_constr_ad40xx.xdc" \
-      "$ad_hdl_dir/projects/common/zed/zed_system_constr.xdc"]
+      "system_constr_ad40xx.xdc" ]
+
+  if {$FOUR_WIRE_MODE == 0} {
+
+    adi_project_files pulsar_adc_pmdz_zed [list \
+      "system_constr_ad40xx_NFW.xdc" ]
+
+  } elseif {$FOUR_WIRE_MODE == 1} {
+
+    adi_project_files pulsar_adc_pmdz_zed [list \
+      "system_constr_ad40xx_FW.xdc" ]
+
+  }
+
 } else {
   return -code error [format "ERROR: Invalid eval board type! ..."]
 }

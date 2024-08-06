@@ -35,8 +35,9 @@
 
 `timescale 1ns/100ps
 
-module system_top (
-
+module system_top #(
+  parameter FOUR_WIRE_MODE = 0
+) (
   inout   [14:0]  ddr_addr,
   inout   [ 2:0]  ddr_ba,
   inout           ddr_cas_n,
@@ -106,9 +107,14 @@ module system_top (
   wire    [ 1:0]  iic_mux_sda_o_s;
   wire            iic_mux_sda_t_s;
 
+  wire            spi_engine_sdo;
+  wire            spi_engine_cs;
+
   // instantiations
 
-  assign gpio_i[63:34] = gpio_o[63:34];
+  assign gpio_i[63:35] = gpio_o[63:35];
+  assign ad40xx_spi_sdo =  FOUR_WIRE_MODE == 1 ? spi_engine_cs : spi_engine_sdo;
+  assign ad40xx_spi_cs =  FOUR_WIRE_MODE == 1 ? gpio_o[34] : spi_engine_cs;
 
   ad_iobuf #(
     .DATA_WIDTH(2)
@@ -116,7 +122,8 @@ module system_top (
     .dio_t(gpio_t[33:32]),
     .dio_i(gpio_o[33:32]),
     .dio_o(gpio_i[33:32]),
-    .dio_p({ad7944_turbo,ad40xx_amp_pd}));
+    .dio_p({ad7944_turbo,
+        ad40xx_amp_pd}));
 
   ad_iobuf #(
     .DATA_WIDTH(32)
@@ -203,10 +210,10 @@ module system_top (
     .spi1_sdi_i (1'b0),
     .spi1_sdo_i (1'b0),
     .spi1_sdo_o (),
-    .pulsar_adc_spi_cs(ad40xx_spi_cs),
+    .pulsar_adc_spi_cs(spi_engine_cs),
     .pulsar_adc_spi_sclk(ad40xx_spi_sclk),
     .pulsar_adc_spi_sdi(ad40xx_spi_sdi),
-    .pulsar_adc_spi_sdo(ad40xx_spi_sdo),
+    .pulsar_adc_spi_sdo(spi_engine_sdo),
     .pulsar_adc_spi_sdo_t(),
     .pulsar_adc_spi_three_wire(),
     .otg_vbusoc (otg_vbusoc),
