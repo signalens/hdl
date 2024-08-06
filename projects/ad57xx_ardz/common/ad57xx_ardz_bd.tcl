@@ -27,9 +27,9 @@ spi_engine_create $hier_spi_engine $data_width $async_spi_clk $num_cs $num_sdi $
 # clkgen
 
 ad_ip_instance axi_clkgen axi_ad57xx_clkgen;
-ad_ip_parameter axi_ad57xx_clkgen CONFIG.VCO_DIV 5
+ad_ip_parameter axi_ad57xx_clkgen CONFIG.VCO_DIV 1
 ad_ip_parameter axi_ad57xx_clkgen CONFIG.VCO_MUL 7
-ad_ip_parameter axi_ad57xx_clkgen CONFIG.CLK0_DIV 1
+ad_ip_parameter axi_ad57xx_clkgen CONFIG.CLK0_DIV 5
 
 # dma to receive data stream
 
@@ -39,8 +39,8 @@ ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_TYPE_DEST 0
 ad_ip_parameter ad57xx_rx_dma CONFIG.CYCLIC 0
 ad_ip_parameter ad57xx_rx_dma CONFIG.SYNC_TRANSFER_START 0
 ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_2D_TRANSFER 0
-ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_DATA_WIDTH_SRC 128
-ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_DATA_WIDTH_DEST 32
+ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_DATA_WIDTH_SRC $data_width
+ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_DATA_WIDTH_DEST 64
 
 # dma to send sample data
 
@@ -50,8 +50,8 @@ ad_ip_parameter ad57xx_tx_dma CONFIG.DMA_TYPE_DEST 1
 ad_ip_parameter ad57xx_tx_dma CONFIG.CYCLIC 0
 ad_ip_parameter ad57xx_tx_dma CONFIG.SYNC_TRANSFER_START 0
 ad_ip_parameter ad57xx_tx_dma CONFIG.DMA_2D_TRANSFER 0
-ad_ip_parameter ad57xx_tx_dma CONFIG.DMA_DATA_WIDTH_SRC 32
-ad_ip_parameter ad57xx_tx_dma CONFIG.DMA_DATA_WIDTH_DEST 128
+ad_ip_parameter ad57xx_tx_dma CONFIG.DMA_DATA_WIDTH_SRC 64
+ad_ip_parameter ad57xx_tx_dma CONFIG.DMA_DATA_WIDTH_DEST $data_width
 
 # trigger generator
 
