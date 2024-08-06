@@ -275,7 +275,7 @@ module spi_engine_offload #(
       if (!spi_active) begin
         // start offload when we have a valid trigger, offload is enabled and
         // the DMA is enabled
-        if (trigger_posedge && spi_enable && offload_sdi_ready)
+        if (trigger_posedge && spi_enable && (offload_sdi_ready || (SDO_STREAMING && s_axis_sdo_valid)))
           spi_active <= 1'b1;
       end else if (cmd_ready && (spi_cmd_rd_addr_next == ctrl_cmd_wr_addr)) begin
         spi_active <= 1'b0;
