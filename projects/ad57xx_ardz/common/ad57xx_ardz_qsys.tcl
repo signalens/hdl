@@ -3,15 +3,6 @@
 ### SPDX short identifier: ADIBSD
 ###############################################################################
 
-# receive dma
-
-add_instance axi_dmac_0 axi_dmac
-set_instance_parameter_value axi_dmac_0 {DMA_TYPE_SRC} {1}
-set_instance_parameter_value axi_dmac_0 {DMA_TYPE_DEST} {0}
-set_instance_parameter_value axi_dmac_0 {CYCLIC} {0}
-set_instance_parameter_value axi_dmac_0 {DMA_DATA_WIDTH_SRC} {32}
-set_instance_parameter_value axi_dmac_0 {DMA_DATA_WIDTH_DEST} {128}
-
 # send dma
 
 add_instance axi_dmac_1 axi_dmac
@@ -120,7 +111,6 @@ add_connection sys_clk.clk spi_clk_pll.refclk
 add_connection sys_clk.clk spi_clk_pll_reconfig.mgmt_clk
 
 add_connection sys_clk.clk axi_spi_engine_0.s_axi_clock
-add_connection sys_clk.clk axi_dmac_0.s_axi_clock
 add_connection sys_clk.clk axi_dmac_1.s_axi_clock
 add_connection sys_clk.clk trig_gen.s_axi_clock
 
@@ -130,9 +120,7 @@ add_connection spi_clk_pll.outclk0 spi_engine_interconnect_0.if_clk
 add_connection spi_clk_pll.outclk0 axi_spi_engine_0.if_spi_clk
 add_connection spi_clk_pll.outclk0 spi_engine_offload_0.if_ctrl_clk
 add_connection spi_clk_pll.outclk0 spi_engine_offload_0.if_spi_clk
-add_connection spi_clk_pll.outclk0 axi_dmac_0.if_s_axis_aclk
 add_connection spi_clk_pll.outclk0 axi_dmac_1.if_m_axis_aclk
-add_connection sys_dma_clk.clk axi_dmac_0.m_dest_axi_clock
 add_connection sys_dma_clk.clk axi_dmac_1.m_src_axi_clock
 
 # resets
@@ -140,7 +128,6 @@ add_connection sys_dma_clk.clk axi_dmac_1.m_src_axi_clock
 add_connection sys_clk.clk_reset spi_clk_pll.reset
 add_connection sys_clk.clk_reset spi_clk_pll_reconfig.mgmt_reset
 add_connection sys_clk.clk_reset axi_spi_engine_0.s_axi_reset
-add_connection sys_clk.clk_reset axi_dmac_0.s_axi_reset
 add_connection sys_clk.clk_reset axi_dmac_1.s_axi_reset
 add_connection sys_clk.clk_reset trig_gen.s_axi_reset
 
@@ -148,7 +135,6 @@ add_connection axi_spi_engine_0.if_spi_resetn spi_engine_execution_0.if_resetn
 add_connection axi_spi_engine_0.if_spi_resetn spi_engine_interconnect_0.if_resetn
 add_connection axi_spi_engine_0.if_spi_resetn spi_engine_offload_0.if_spi_resetn
 
-add_connection sys_dma_clk.clk_reset axi_dmac_0.m_dest_axi_reset
 add_connection sys_dma_clk.clk_reset axi_dmac_1.m_src_axi_reset
 
 # interfaces
@@ -176,12 +162,10 @@ add_connection spi_engine_offload_0.if_ctrl_mem_reset axi_spi_engine_0.if_offloa
 add_connection spi_engine_offload_0.status_sync       axi_spi_engine_0.offload_sync
 add_connection spi_engine_offload_0.if_trigger        trig_gen.if_pwm_0
 
-add_connection spi_engine_offload_0.offload_sdi axi_dmac_0.s_axis
 add_connection axi_dmac_1.m_axis spi_engine_offload_0.s_axis_sdo
 
 # cpu interconnects
 
-ad_cpu_interconnect 0x00020000 axi_dmac_0.s_axi
 ad_cpu_interconnect 0x00030000 axi_dmac_1.s_axi
 ad_cpu_interconnect 0x00040000 axi_spi_engine_0.s_axi
 ad_cpu_interconnect 0x00050000 trig_gen.s_axi
@@ -189,11 +173,9 @@ ad_cpu_interconnect 0x00060000 spi_clk_pll_reconfig.mgmt_avalon_slave
 
 # dma interconnect
 
-ad_dma_interconnect axi_dmac_0.m_dest_axi
 ad_dma_interconnect axi_dmac_1.m_src_axi
 
 #interrupts
 
-ad_cpu_interrupt 4 axi_dmac_0.interrupt_sender
-ad_cpu_interrupt 5 axi_dmac_1.interrupt_sender
-ad_cpu_interrupt 6 axi_spi_engine_0.interrupt_sender
+ad_cpu_interrupt 4 axi_dmac_1.interrupt_sender
+ad_cpu_interrupt 5 axi_spi_engine_0.interrupt_sender

@@ -31,17 +31,6 @@ ad_ip_parameter axi_ad57xx_clkgen CONFIG.VCO_DIV 1
 ad_ip_parameter axi_ad57xx_clkgen CONFIG.VCO_MUL 7
 ad_ip_parameter axi_ad57xx_clkgen CONFIG.CLK0_DIV 5
 
-# dma to receive data stream
-
-ad_ip_instance axi_dmac ad57xx_rx_dma
-ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_TYPE_SRC 1
-ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_TYPE_DEST 0
-ad_ip_parameter ad57xx_rx_dma CONFIG.CYCLIC 0
-ad_ip_parameter ad57xx_rx_dma CONFIG.SYNC_TRANSFER_START 0
-ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_2D_TRANSFER 0
-ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_DATA_WIDTH_SRC $data_width
-ad_ip_parameter ad57xx_rx_dma CONFIG.DMA_DATA_WIDTH_DEST 64
-
 # dma to send sample data
 
 ad_ip_instance axi_dmac ad57xx_tx_dma
@@ -70,32 +59,26 @@ ad_connect trig_gen/pwm_0 $hier_spi_engine/trigger
 ad_connect  axi_ad57xx_clkgen/clk_0 $hier_spi_engine/spi_clk
 ad_connect  $sys_cpu_clk axi_ad57xx_clkgen/clk
 ad_connect  $sys_cpu_clk $hier_spi_engine/clk
-ad_connect  axi_ad57xx_clkgen/clk_0 ad57xx_rx_dma/s_axis_aclk
 ad_connect  axi_ad57xx_clkgen/clk_0 ad57xx_tx_dma/m_axis_aclk
 ad_connect  sys_cpu_resetn $hier_spi_engine/resetn
-ad_connect  sys_cpu_resetn ad57xx_rx_dma/m_dest_axi_aresetn
 ad_connect  sys_cpu_resetn ad57xx_tx_dma/m_src_axi_aresetn
 
 ad_connect  $hier_spi_engine/m_spi ad57xx_spi
-ad_connect  ad57xx_rx_dma/s_axis $hier_spi_engine/M_AXIS_SAMPLE
 ad_connect  ad57xx_tx_dma/m_axis $hier_spi_engine/s_axis_sample
 
 # AXI address definitions
 
 ad_cpu_interconnect 0x44a00000 $hier_spi_engine/${hier_spi_engine}_axi_regmap
-ad_cpu_interconnect 0x44a30000 ad57xx_rx_dma
 ad_cpu_interconnect 0x44a40000 ad57xx_tx_dma
 ad_cpu_interconnect 0x44b00000 trig_gen
 ad_cpu_interconnect 0x44b10000 axi_ad57xx_clkgen
 
 # interrupts
 
-ad_cpu_interrupt "ps-13" "mb-13" ad57xx_rx_dma/irq
 ad_cpu_interrupt "ps-12" "mb-12" ad57xx_tx_dma/irq
 ad_cpu_interrupt "ps-11" "mb-11" $hier_spi_engine/irq
 
 # memory interconnects
 
 ad_mem_hp1_interconnect $sys_cpu_clk sys_ps7/S_AXI_HP1
-ad_mem_hp1_interconnect $sys_cpu_clk ad57xx_rx_dma/m_dest_axi
 ad_mem_hp1_interconnect $sys_cpu_clk ad57xx_tx_dma/m_src_axi
