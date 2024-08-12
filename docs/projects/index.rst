@@ -18,6 +18,7 @@ Contents
 .. toctree::
    :maxdepth: 1
 
+   AD4110-SDZ <ad4110/index>
    AD411x_AD717x <ad411x_ad717x/index>
    AD4134-FMC <ad4134_fmc/index>
    AD4170-ASDZ <ad4170_asdz/index>
