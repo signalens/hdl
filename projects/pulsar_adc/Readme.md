@@ -68,6 +68,8 @@ Here are some pointers to help you:
   * AD4020
 
 build example:
-make
-make AD40XX_ADAQ400X_N=1 FOUR_WIRE_MODE=0
-make AD40XX_ADAQ400X_N=1 FOUR_WIRE_MODE=1
+make FMC_N_PMOD=0
+make FMC_N_PMOD=1 SPI_OP_MODE=0
+make FMC_N_PMOD=1 SPI_OP_MODE=1
+make FMC_N_PMOD=1 SPI_OP_MODE=2
+

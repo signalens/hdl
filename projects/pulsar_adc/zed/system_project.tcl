@@ -23,41 +23,38 @@ source $ad_hdl_dir/projects/scripts/adi_board.tcl
 ##    1 - EVAL-AD40XX-FMCZ
 ##    0 - EVAL-ADAQ400x
 ##
-set AD40XX_ADAQ400X_N [get_env_param AD40XX_ADAQ400X_N 1]
-set FOUR_WIRE_MODE [get_env_param FOUR_WIRE_MODE 0]
+set FMC_N_PMOD [get_env_param FMC_N_PMOD 1]
+set SPI_OP_MODE [get_env_param SPI_OP_MODE 0]
 
 adi_project pulsar_adc_pmdz_zed 0 [list \
-  FOUR_WIRE_MODE   [get_env_param FOUR_WIRE_MODE      0]]
+  FMC_N_PMOD    [get_env_param FMC_N_PMOD  1] \
+  SPI_OP_MODE   [get_env_param SPI_OP_MODE 0] ]
 
 adi_project_files pulsar_adc_pmdz_zed [list \
   "$ad_hdl_dir/library/common/ad_iobuf.v" \
-  "$ad_hdl_dir/projects/common/zed/zed_system_constr.xdc"]
+  "$ad_hdl_dir/projects/common/zed/zed_system_constr.xdc" ]
 
-if {$AD40XX_ADAQ400X_N == 0} {
+if {$FMC_N_PMOD == 0} {
   adi_project_files pulsar_adc_pmdz_zed [list \
-    "system_top_adaq400x.v" \
-    "system_constr_adaq400x.xdc" ]
-
-} elseif {$AD40XX_ADAQ400X_N == 1} {
-
+    "system_top_pmod.v" \
+    "system_constr_pmod.xdc" ]
+} elseif {$FMC_N_PMOD == 1} {
     adi_project_files pulsar_adc_pmdz_zed [list \
-      "system_top_ad40xx.v" \
-      "system_constr_ad40xx.xdc" ]
-
-  if {$FOUR_WIRE_MODE == 0} {
-
+      "system_top_fmc.v" \
+      "system_constr_fmc.xdc" ]
+    if {$SPI_OP_MODE == 0} {
     adi_project_files pulsar_adc_pmdz_zed [list \
-      "system_constr_ad40xx_NFW.xdc" ]
-
-  } elseif {$FOUR_WIRE_MODE == 1} {
-
+      "system_constr_fmc_sm0.xdc" ]
+    } elseif {$SPI_OP_MODE == 1} {
     adi_project_files pulsar_adc_pmdz_zed [list \
-      "system_constr_ad40xx_FW.xdc" ]
-
-  }
-
+      "system_constr_fmc_sm1.xdc" ]
+    } elseif {$SPI_OP_MODE == 2} {
+    adi_project_files pulsar_adc_pmdz_zed [list \
+      "system_constr_fmc_sm2.xdc" ]
+    }
 } else {
   return -code error [format "ERROR: Invalid eval board type! ..."]
 }
 
 adi_project_run pulsar_adc_pmdz_zed
+
