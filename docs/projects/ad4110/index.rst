@@ -53,6 +53,12 @@ Supported carriers
 
 -  :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>` on FMC slot
 
+
+Other required hardware
+-------------------------------------------------------------------------------
+
+-   :adi:`SDP-I-FMC <EVAL-SDP-I-FMC>`
+
 Block design
 -------------------------------------------------------------------------------
 
@@ -61,6 +67,10 @@ Block diagram
 
 The data path and clock domains are depicted in the below diagram:
 
+.. image:: ad4110_block_diagram.svg
+   :width: 800
+   :align: center
+   :alt: AD4110_SDZ block diagram
 
 
 Jumper setup
