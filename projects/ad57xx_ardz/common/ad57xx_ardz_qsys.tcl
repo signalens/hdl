@@ -99,11 +99,13 @@ add_interface ad57xx_spi_sclk       clock source
 add_interface ad57xx_spi_cs         conduit end
 add_interface ad57xx_spi_miso       conduit end
 add_interface ad57xx_spi_mosi       conduit end
+add_interface m_axis_offload_sdi    axi4stream end
 
 set_interface_property ad57xx_spi_cs    EXPORT_OF spi_engine_execution_0.if_cs
 set_interface_property ad57xx_spi_sclk  EXPORT_OF spi_engine_execution_0.if_sclk
 set_interface_property ad57xx_spi_miso  EXPORT_OF spi_engine_execution_0.if_sdi
 set_interface_property ad57xx_spi_mosi  EXPORT_OF spi_engine_execution_0.if_sdo
+set_interface_property m_axis_offload_sdi EXPORT_OF spi_engine_offload_0.offload_sdi
 
 # clocks
 
