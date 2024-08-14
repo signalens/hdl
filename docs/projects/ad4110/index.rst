@@ -53,12 +53,6 @@ Supported carriers
 
 -  :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>` on FMC slot
 
-
-Other required hardware
--------------------------------------------------------------------------------
-
--   :adi:`SDP-I-FMC <EVAL-SDP-I-FMC>`
-
 Block design
 -------------------------------------------------------------------------------
 
@@ -91,29 +85,6 @@ SL5                A                 Connects VOUT of the TMP36 temperature sens
                                      to Pin 27 (AIN1(LV)) of the :adi:`AD4110-1`
 ================== ================= =============================================
 
-I2C connections
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. list-table::
-   :widths: 20 20 20 20 20
-   :header-rows: 1
-
-   * - I2C type
-     - I2C manager instance
-     - Alias
-     - Address
-     - I2C subordinate
-   * - PL
-     - iic_fmc
-     - axi_iic_fmc
-     - 0x4162_0000
-     - ---
-   * - PL
-     - iic_main
-     - axi_iic_main
-     - 0x4160_0000
-     - ---
-
 GPIOs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -133,10 +104,6 @@ The Software GPIO number is calculated as follows:
      - (from FPGA view)
      -
      - Zynq-7000
-   * - gpio[33]
-     - OUT
-     - 33
-     - 87
    * - pmod_gpio[3:0]
      - INOUT
      - 35:32
