@@ -3,7 +3,7 @@
 ## Auto-generated, do not modify!
 ####################################################################################
 
-PROJECT_NAME := ant
+PROJECT_NAME := signalsdrpi
 
 M_DEPS += ../common/xilinx/adi_fir_filter_constr.xdc
 M_DEPS += ../common/xilinx/adi_fir_filter_bd.tcl
