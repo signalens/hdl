@@ -9,9 +9,15 @@ adi_project_files signalsdrpro [list \
   "system_top.v" \
   "system_constr.xdc" \
   "dsp_constraints.xdc" \
+  "io_constraints.xdc" \
   "$ad_hdl_dir/library/common/ad_iobuf.v"]
 
 set_property is_enabled false [get_files  *system_sys_ps7_0.xdc]
+
+set_property SEVERITY {Warning} [get_drc_checks NSTD-1]
+set_property SEVERITY {Warning} [get_drc_checks UCIO-1]
+
+set_property STEPS.WRITE_BITSTREAM.TCL.PRE [list [file join $ad_hdl_dir projects scripts write_bitstream_pre.tcl]] [get_runs impl_1]
+
 adi_project_run signalsdrpro
 source $ad_hdl_dir/library/axi_ad9361/axi_ad9361_delay.tcl
-
