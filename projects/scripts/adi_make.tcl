@@ -14,12 +14,24 @@
 ##                     files are in the project folder"
 ## For more info please see: https://wiki.analog.com/resources/fpga/docs/build
 
+puts "Starting adi_make.tcl script"
+puts "Current directory: [pwd]"
 
+# Handle command line arguments
+if {[llength $argv] >= 2} {
+    set command [lindex $argv 0]
+    set args [lindex $argv 1]
+    puts "Command: $command, Args: $args"
+    
+    if {$command eq "lib"} {
+        adi_make::lib $args
+    }
+}
 
 namespace eval adi_make {
   ##############################################################################
   # to print debug step messages "set debug_msg=1" (set adi_make::debug_msg 1)
-  variable debug_msg 0
+  variable debug_msg 1
   ##############################################################################
 
   variable library_dir
@@ -29,16 +41,18 @@ namespace eval adi_make {
   variable indent_level ""
 
   # get library absolute path
-  set root_hdl_folder ""
+  set root_hdl_folder $PWD
   set glb_path $PWD
-  if { [regexp projects $glb_path] } {
-    regsub {/projects.*$} $glb_path "" root_hdl_folder
+  puts "Global path: $glb_path"
+  
+  if { [regexp hdl $glb_path] } {
+    set library_dir "$root_hdl_folder/library"
+    puts "Root HDL folder: $root_hdl_folder"
+    puts "Library directory: $library_dir"
   } else {
-    puts "ERROR: Not in hdl/* folder"
+    puts "ERROR: Not in hdl folder"
     return
   }
-
-  set library_dir "$root_hdl_folder/library"
 
   #----------------------------------------------------------------------------
   # have debug messages
@@ -53,10 +67,15 @@ namespace eval adi_make {
   #----------------------------------------------------------------------------
   # returns the projects required set of libraries
   proc get_libraries {} {
-
+    puts "Getting libraries from Makefile"
     set build_list ""
 
     set search_pattern "LIB_DEPS.*="
+    if {![file exists ./Makefile]} {
+      puts "ERROR: Makefile not found in current directory"
+      return ""
+    }
+    
     set fp1 [open ./Makefile r]
     set file_data [read $fp1]
     close $fp1
@@ -70,19 +89,22 @@ namespace eval adi_make {
         append build_list "$library "
       }
     }
+    puts "Found libraries: $build_list"
     return $build_list
   }
 
   #----------------------------------------------------------------------------
   proc lib { libraries } {
-
+    puts "Starting lib procedure with libraries: $libraries"
     variable library_dir
     variable PWD
     variable done_list
 
     set build_list $libraries
     if { $libraries == "all" } {
+      puts "Getting all libraries"
       set build_list "[get_libraries]"
+      puts "Build list after get_libraries: $build_list"
     }
 
     set libraries ""
@@ -93,11 +115,13 @@ namespace eval adi_make {
     }
 
     puts "Please wait, this might take a few minutes"
+    puts "Libraries to build: $libraries"
 
     # searching for subdir libraries in path of the given args
     set first_lib [lindex $libraries 0]
     if { $first_lib == "" } {
-     set first_lib "."
+      puts "No libraries found to build"
+      set first_lib "."
     }
     # getting all (libraries)
     set index 0
@@ -200,6 +224,7 @@ namespace eval adi_make {
     set lib_name "[file tail $library]_ip"
 
     cd $library_dir/${library}
+    puts "Building $library in directory: [pwd]"
     exec vivado -mode batch -source "$library_dir/${library}/${lib_name}.tcl"
     file copy -force ./vivado.log ./${lib_name}.log
     puts "- Done building $library"
@@ -256,8 +281,4 @@ namespace eval adi_make {
     eval $xsct_script $build_args
   }
 
-} ;# ad_make namespace
-
-
-#############################################################################
-#############################################################################
+} ;# adi_make namespace

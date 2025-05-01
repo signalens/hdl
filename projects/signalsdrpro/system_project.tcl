@@ -1,4 +1,3 @@
-
 source ../../scripts/adi_env.tcl
 source $ad_hdl_dir/projects/scripts/adi_project_xilinx.tcl
 source $ad_hdl_dir/projects/scripts/adi_board.tcl
@@ -9,6 +8,7 @@ adi_project signalsdrpro
 adi_project_files signalsdrpro [list \
   "system_top.v" \
   "system_constr.xdc" \
+  "dsp_constraints.xdc" \
   "$ad_hdl_dir/library/common/ad_iobuf.v"]
 
 set_property is_enabled false [get_files  *system_sys_ps7_0.xdc]
