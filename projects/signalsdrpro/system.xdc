@@ -1,4 +1,3 @@
-
 set_property  -dict {PACKAGE_PIN  U20  IOSTANDARD LVCMOS25} [get_ports gpio_sync]                        ;
 set_property  -dict {PACKAGE_PIN  N17  IOSTANDARD LVCMOS25} [get_ports gpio_resetb]                      ;
 
@@ -139,12 +138,3 @@ set_property  -dict {PACKAGE_PIN V13    IOSTANDARD LVCMOS25 } [get_ports  FPGA_C
 
 set_property  -dict {PACKAGE_PIN T20    IOSTANDARD LVCMOS25 } [get_ports  TRIG];
 set_property  -dict {PACKAGE_PIN T19    IOSTANDARD LVCMOS25 } [get_ports  REF_CHK];
-
-
-
-
-
-
-
-
-
