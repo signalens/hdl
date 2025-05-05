@@ -1,21 +1,15 @@
 source ../../scripts/adi_env.tcl
 source $ad_hdl_dir/projects/scripts/adi_project_xilinx.tcl
 source $ad_hdl_dir/projects/scripts/adi_board.tcl
+source ./system_bd.tcl
 
 set p_device "xc7z020clg400-1"
 adi_project signalsdrpro
 
 adi_project_files signalsdrpro [list \
   "system_top.v" \
-  "system_constr.xdc" \
-  "dsp_constraints.xdc" \
-  "io_constraints.xdc" \
+  "system.xdc" \
   "$ad_hdl_dir/library/common/ad_iobuf.v"]
-
-set_property is_enabled false [get_files  *system_sys_ps7_0.xdc]
-
-set_property SEVERITY {Warning} [get_drc_checks NSTD-1]
-set_property SEVERITY {Warning} [get_drc_checks UCIO-1]
 
 set_property STEPS.WRITE_BITSTREAM.TCL.PRE [list [file join $ad_hdl_dir projects scripts write_bitstream_pre.tcl]] [get_runs impl_1]
 
