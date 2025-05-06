@@ -12,5 +12,6 @@ adi_project_files signalsdrpro [list \
 
 set_property STEPS.WRITE_BITSTREAM.TCL.PRE [list [file join $ad_hdl_dir projects scripts write_bitstream_pre.tcl]] [get_runs impl_1]
 
-adi_project_run signalsdrpro
 source $ad_hdl_dir/library/axi_ad9361/axi_ad9361_delay.tcl
+adi_project_run signalsdrpro
+
